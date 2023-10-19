@@ -97,7 +97,7 @@ jobs:
       - name: Set Profile and Mandrel Image
         id: set-mandrel-image
         run: |
-          if [[ ${{ matrix.image }} == 17 ]]; then
+          if [[ ${{ matrix.java }} == 17 ]]; then
             echo PROFILE=JDK17 >> $GITHUB_OUTPUT
             echo MANDREL_IMAGE=ubi-quarkus-mandrel-builder-image:23.0-java17 >> $GITHUB_OUTPUT
           else

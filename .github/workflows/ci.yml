@@ -5,43 +5,6 @@ on:
   schedule:
     - cron: '0 20 * * *'
 jobs:
-  build-dependencies:
-    name: Build Dependencies
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        java: [ 17 ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Reclaim Disk Space
-        run: .github/ci-prerequisites.sh
-      - name: Install required tools
-        run: |
-          sudo apt update && sudo apt install pigz
-      - name: Install JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: ${{ matrix.java }}
-      - name: Build Quarkus main
-        run: |
-          git clone https://github.com/quarkusio/quarkus.git && cd quarkus && ./mvnw -B -s .github/mvn-settings.xml clean install -Dquickly -Prelocations
-      - name: Tar Maven Repo
-        shell: bash
-        run: tar -I 'pigz -9' -cf maven-repo.tgz -C ~ .m2/repository
-      - name: Persist Maven Repo
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven-repo
-          path: maven-repo.tgz
-          retention-days: 1
   linux-build-jvm-latest:
     name: Linux - JVM build - Latest Version
     runs-on: ubuntu-latest

@@ -232,6 +232,8 @@
                     <failsOnError>true</failsOnError>
                     <linkXRef>true</linkXRef>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <!-- exclude preview as latest checkstyle 3.3.0 not support unnamed patterns abd variables -->
+                    <excludes>**/preview/**</excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -279,6 +281,7 @@
             </activation>
             <modules>
                 <module>jdk21/resteasy-reactive-jackson</module>
+                <module>jdk21/qute</module>
             </modules>
             <properties>
                 <maven.compiler.release>21</maven.compiler.release>
